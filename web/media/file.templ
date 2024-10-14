@@ -1,0 +1,65 @@
+package media
+
+type MediaFile struct {
+	FileName         string
+	UrlPath          string
+	AbsPath          string
+	MediaType        string
+	EditMode         bool
+	DestinationAvail bool
+	TrashAvail       bool
+}
+
+templ MediaFileTempl(file MediaFile) {
+	<div class="sortastic-file">
+		if file.MediaType == "image" || file.MediaType == "video" {
+			<figure>
+				if file.MediaType == "image" {
+					<img class="w-full rounded-tl-2xl rounded-tr-2xl" src={ file.UrlPath } loading="lazy"/>
+				} else if file.MediaType == "video" {
+					<video class="w-full rounded-tl-2xl rounded-tr-2xl" controls preload="metadata">
+						<source src={ file.UrlPath + "#t=0.1" }/>
+					</video>
+				}
+			</figure>
+		}
+		<div class="sortastic-filename">
+			<a class="grow font-medium text-white leading-loose pl-2 py-1" href={ templ.URL(file.UrlPath) }>
+				{ file.FileName }
+			</a>
+			if file.EditMode {
+				<img
+					class="sortastic-button"
+					src="/static/rename.svg"
+					title="Rename"
+					hx-post={ file.UrlPath }
+					hx-vals="js:{action:'rename-start'}"
+					hx-target="closest .sortastic-filename"
+					hx-swap="outerHTML"
+				/>
+			}
+			if file.DestinationAvail {
+				<img
+					class="sortastic-button"
+					src="/static/yes-green.svg"
+					title="Approve"
+					hx-post={ file.UrlPath }
+					hx-vals="js:{action:'approve'}"
+					hx-target="closest .sortastic-file"
+					hx-swap="outerHTML"
+				/>
+			}
+			if file.TrashAvail {
+				<img
+					class="sortastic-button"
+					src="/static/delete-forever.svg"
+					title="Delete"
+					hx-post={ file.UrlPath }
+					hx-vals="js:{action:'delete'}"
+					hx-target="closest .sortastic-file"
+					hx-swap="outerHTML"
+				/>
+			}
+		</div>
+	</div>
+}

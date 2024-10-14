@@ -1,0 +1,62 @@
+package media
+
+templ RestoreFromTrashTempl(file MediaFile) {
+	<div class="sortastic-file">
+		<div class="sortastic-filename">
+			<div class="grow p-2">Deleted { file.FileName }</div>
+			<img
+				class="sortastic-button"
+				src="/static/undo.svg"
+				hx-post={ file.UrlPath }
+				hx-vals="js:{action:'restore'}"
+				hx-target="closest .sortastic-file"
+				hx-swap="outerHTML"
+			/>
+		</div>
+	</div>
+}
+
+templ MovedToDestinationTempl(file MediaFile) {
+	<div class="sortastic-file">
+		<div class="sortastic-filename">
+			<div class="grow p-2">Moved { file.FileName }</div>
+			<!--
+			<img
+				class="sortastic-button"
+				src="/static/undo.svg"
+				hx-post={ file.UrlPath }
+				hx-vals="js:{action:'undo-approve'}"
+				hx-target="closest .sortastic-file"
+				hx-swap="outerHTML"
+			/>
+			-->
+		</div>
+	</div>
+}
+
+templ RenameStartedTempl(file MediaFile) {
+	<form
+		class="sortastic-filename"
+		hx-post={ file.UrlPath }
+		hx-target="closest .sortastic-file"
+		hx-swap="outerHTML"
+	>
+		<!-- Implicit 'action' to be sent with form when submitting by hitting Enter -->
+		<input type="hidden" name="action" value="rename-save"/>
+		<input class="grow rounded-xl p-2 bg-slate-950 text-white" name="rename-to" value={ file.FileName } autofocus/>
+		<img
+			class="sortastic-button"
+			src="/static/yes.svg"
+			alt="Save"
+			hx-post={ file.UrlPath }
+			hx-vals="js:{action:'rename-save'}"
+		/>
+		<img
+			class="sortastic-button"
+			src="/static/cancel.svg"
+			alt="Cancel"
+			hx-post={ file.UrlPath }
+			hx-vals="js:{action:'rename-cancel'}"
+		/>
+	</form>
+}

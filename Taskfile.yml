@@ -1,6 +1,20 @@
 version: '3'
 
 tasks:
+  run:
+    desc: Watch for changed files & restart the server
+    watch: true
+    # run: when_changed
+    sources:
+      - '**/*.go'
+      - '**/*.css'
+      - '**/*.svg'
+      - '**/*.yml'
+      - '**/*.templ'
+    deps: [tailwind-debug, fmt]
+    cmds:
+      - go run . web
+
   tailwind-debug:
     desc: Tailwind with human-readable output
     deps: [templ]
@@ -16,6 +30,34 @@ tasks:
       - tailwindcss --minify --content "./web/**/*.templ" --input web/static/src.css --output web/static/gen.css
     generates:
       - web/static/gen.css
+
+  templ:
+    desc: Re-gen Templ templates
+    sources:
+      - '**/*.templ'
+    cmds:
+      - templ generate
+      - templ fmt .
+    generates:
+      - '**/*_templ.go'
+
+  fmt:
+    desc: Format all sources
+    cmds:
+      - go mod tidy
+      - gofumpt -l -w .
+
+  update:
+    desc: Update dependencies
+    deps: [setup.macos, fmt]
+    cmds:
+      - go get -u ./...
+
+  install:
+    desc: Build & install binary
+    deps: [tailwind-minify, templ, fmt]
+    cmds:
+      - go install .
 
   setup.macos:
     desc: Install tools & dependencies for MacOS

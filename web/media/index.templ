@@ -1,0 +1,31 @@
+package media
+
+import "fmt"
+
+type IndexPage struct {
+	Title    string
+	Slug     string
+	UrlPath  string
+	NumFiles int
+	Files    []MediaFile
+}
+
+templ IndexPageTempl(index IndexPage) {
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<title>{ index.Title } — { index.Slug }</title>
+			<meta name="viewport" content="width=device-width,initial-scale=1"/>
+			<script src="/static/htmx.min.js"></script>
+			<link rel="stylesheet" href="/static/gen.css"/>
+			<link rel="icon" href="/static/favicon.svg"/>
+		</head>
+		<body class="sortastic-body">
+			<h1 class="text-2xl leading-[3rem] mt-10 font-bold"><a href="/">{ index.Title } — { index.Slug }</a></h1>
+			<h2 class="text-lg leading-[3rem] mb-5 font-bold">{ index.UrlPath } — { fmt.Sprintf("%d", index.NumFiles) } items</h2>
+			for _, file := range index.Files {
+				@MediaFileTempl(file)
+			}
+		</body>
+	</html>
+}
