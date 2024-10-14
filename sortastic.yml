@@ -1,0 +1,10 @@
+web:
+  host: 'localhost' # localhost   # Set `host` to `localhost` (instead of ``) to prevent the macOS firewall dialog.
+  port: 8888
+
+directories:
+  - slug: Pictures
+    source: /Users/Manas/Pictures
+    mode: edit
+    trash: /Users/Manas/.Trash
+
