@@ -1,6 +1,22 @@
 version: '3'
 
 tasks:
+  tailwind-debug:
+    desc: Tailwind with human-readable output
+    deps: [templ]
+    cmds:
+      - tailwindcss --content "./web/**/*.templ" --input web/static/src.css --output web/static/gen.css
+
+  tailwind-minify:
+    desc: Tailwind minified
+    sources:
+      - '**/*.templ'
+      - web/static/src.css
+    cmds:
+      - tailwindcss --minify --content "./web/**/*.templ" --input web/static/src.css --output web/static/gen.css
+    generates:
+      - web/static/gen.css
+
   setup.macos:
     desc: Install tools & dependencies for MacOS
     cmds:
