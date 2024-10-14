@@ -1,0 +1,11 @@
+version: '3'
+
+tasks:
+  setup.macos:
+    desc: Install tools & dependencies for MacOS
+    cmds:
+      - brew install go-task/tap/go-task
+      - brew install tailwindcss
+      - go install github.com/a-h/templ/cmd/templ@latest
+      - go install golang.org/x/tools/cmd/goimports@latest
+      - go install mvdan.cc/gofumpt@latest
