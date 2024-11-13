@@ -185,11 +185,31 @@ func serveIndex(w http.ResponseWriter, req *http.Request, dir conf.AppConfigDire
 }
 
 func moveFile(srcFile string, destFile string, reason string) {
-	// TODO: If the same directory exists already, move its contents instead of failing silently.
 	log.Println(reason, srcFile, destFile)
 	os.MkdirAll(filepath.Dir(destFile), os.ModePerm)
-	err := os.Rename(srcFile, destFile)
+
+	fi, err := os.Stat(srcFile)
 	if err != nil {
 		log.Println(err)
+	} else {
+		if fi.IsDir() {
+			// If this is a directory, then recurse & move its contents, otherwise moving the
+			// directory itself will fail if the same directory already exists at the destination.
+			files, err := os.ReadDir(srcFile)
+			if err != nil {
+				log.Println(err)
+			} else {
+				for _, subFile := range files {
+					moveFile(
+						filepath.Join(srcFile, subFile.Name()),
+						filepath.Join(destFile, subFile.Name()), reason)
+				}
+			}
+		} else {
+			err := os.Rename(srcFile, destFile)
+			if err != nil {
+				log.Println(err)
+			}
+		}
 	}
 }
