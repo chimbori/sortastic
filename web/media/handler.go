@@ -8,6 +8,7 @@ import (
 	"path"
 	"path/filepath"
 	"sort"
+	"strings"
 
 	"github.com/facette/natsort"
 
@@ -149,7 +150,7 @@ func serveIndex(w http.ResponseWriter, req *http.Request, dir conf.AppConfigDire
 	}
 
 	sort.Slice(files, func(i, j int) bool {
-		return natsort.Compare(files[i].Name(), files[j].Name())
+		return natsort.Compare(strings.ToLower(files[i].Name()), strings.ToLower(files[j].Name()))
 	})
 
 	mediaFiles := make([]MediaFile, 0)
