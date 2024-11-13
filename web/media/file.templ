@@ -24,17 +24,14 @@ templ MediaFileTempl(file MediaFile) {
 			</figure>
 		}
 		<div class="sortastic-filename">
-			<a class="grow font-medium text-white leading-loose pl-2 py-1" href={ templ.URL(file.UrlPath) }>
-				{ file.FileName }
-			</a>
-			if file.EditMode {
+			if file.TrashAvail {
 				<img
 					class="sortastic-button"
-					src="/static/rename.svg"
-					title="Rename"
+					src="/static/delete-forever.svg"
+					title="Delete"
 					hx-post={ file.UrlPath }
-					hx-vals="js:{action:'rename-start'}"
-					hx-target="closest .sortastic-filename"
+					hx-vals="js:{action:'delete'}"
+					hx-target="closest .sortastic-file"
 					hx-swap="outerHTML"
 				/>
 			}
@@ -49,14 +46,17 @@ templ MediaFileTempl(file MediaFile) {
 					hx-swap="outerHTML"
 				/>
 			}
-			if file.TrashAvail {
+			<a class="grow font-medium text-white leading-loose pl-2 py-1" href={ templ.URL(file.UrlPath) }>
+				{ file.FileName }
+			</a>
+			if file.EditMode {
 				<img
 					class="sortastic-button"
-					src="/static/delete-forever.svg"
-					title="Delete"
+					src="/static/rename.svg"
+					title="Rename"
 					hx-post={ file.UrlPath }
-					hx-vals="js:{action:'delete'}"
-					hx-target="closest .sortastic-file"
+					hx-vals="js:{action:'rename-start'}"
+					hx-target="closest .sortastic-filename"
 					hx-swap="outerHTML"
 				/>
 			}
