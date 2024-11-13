@@ -1,7 +1,13 @@
 version: '3'
 
 tasks:
-  run:
+  web:
+    desc: Run the server
+    deps: [tailwind-debug]
+    cmds:
+      - go run . web
+
+  watch:
     desc: Watch for changed files & restart the server
     watch: true
     # run: when_changed
