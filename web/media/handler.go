@@ -176,11 +176,14 @@ func serveIndex(w http.ResponseWriter, req *http.Request, dir conf.AppConfigDire
 	}
 
 	IndexPageTempl(IndexPage{
-		Title:    conf.AppName,
-		Slug:     dir.Slug,
-		UrlPath:  relLocalPath,
-		NumFiles: len(mediaFiles),
-		Files:    mediaFiles,
+		Title:            conf.AppName,
+		Slug:             dir.Slug,
+		UrlPath:          relLocalPath,
+		EditMode:         dir.Mode == "edit",
+		DestinationAvail: dir.Destination != "",
+		TrashAvail:       dir.Trash != "",
+		NumFiles:         len(mediaFiles),
+		Files:            mediaFiles,
 	}).Render(req.Context(), w)
 }
 

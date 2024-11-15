@@ -2,8 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+.figtree-400 {
+  font-family: "Figtree", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.figtree-600 {
+  font-family: "Figtree", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.figtree-700 {
+  font-family: "Figtree", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
 .sortastic-body {
-  @apply max-w-screen-md mx-auto px-1 font-sans box-border bg-slate-950 text-white;
+  @apply max-w-screen-md mx-auto px-1 box-border bg-slate-950 text-white figtree-400;
 }
 
 .sortastic-file {
