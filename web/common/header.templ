@@ -1,0 +1,14 @@
+package common
+
+type HeaderData struct {
+	Title string
+}
+
+templ Header(title string) {
+	<p class="text-lg leading-[2rem] mt-4 mb-4 font-semibold">
+		<a href="/">
+			<img class="h-10 w-10 p-1 mx-1 cursor-pointer inline align-middle" src="/static/home.svg"/>
+			{ title }
+		</a>
+	</p>
+}

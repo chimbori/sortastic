@@ -16,7 +16,7 @@ templ HomeTempl(home HomePage) {
 			@common.Head()
 		</head>
 		<body class="sortastic-body">
-			<h1 class="text-2xl leading-[3rem] mt-10 font-bold"><a href="/">{ home.Title }</a></h1>
+			@common.Header(home.Title)
 			<section>
 				for _, dir := range home.Directories {
 					<div class="sortastic-file">

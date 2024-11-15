@@ -24,15 +24,16 @@ templ IndexPageTempl(index IndexPage) {
 			@common.Head()
 		</head>
 		<body class="sortastic-body">
-			<h1 class="text-2xl leading-[3rem] mt-10 font-bold"><a href="/">{ index.Title } — { index.Slug }</a></h1>
-			<h2 class="text-lg leading-[3rem] mb-5 font-bold flex flex-row">
-				if index.TrashAvail {
+			@common.Header(index.Slug)
+			<h1 class="text-2xl leading-[3rem] font-bold flex flex-row">
+				<span class="grow">{ index.UrlPath }</span>
+				if index.EditMode {
 					<img
 						class="sortastic-button"
-						src="/static/delete-forever.svg"
-						title="Delete"
+						src="/static/rename.svg"
+						title="Rename"
 						hx-post={ index.UrlPath }
-						hx-vals="js:{action:'delete'}"
+						hx-vals="js:{action:'rename-start'}"
 						hx-target="closest h2"
 						hx-swap="innerHTML"
 					/>
@@ -48,19 +49,19 @@ templ IndexPageTempl(index IndexPage) {
 						hx-swap="innerHTML"
 					/>
 				}
-				if index.EditMode {
+				if index.TrashAvail {
 					<img
 						class="sortastic-button"
-						src="/static/rename.svg"
-						title="Rename"
+						src="/static/delete-forever.svg"
+						title="Delete"
 						hx-post={ index.UrlPath }
-						hx-vals="js:{action:'rename-start'}"
+						hx-vals="js:{action:'delete'}"
 						hx-target="closest h2"
 						hx-swap="innerHTML"
 					/>
 				}
-				{ index.UrlPath } — { fmt.Sprintf("%d", index.NumFiles) } items
-			</h2>
+			</h1>
+			<p>{ fmt.Sprintf("%d", index.NumFiles) } items</p>
 			for _, file := range index.Files {
 				@MediaFileTempl(file)
 			}
