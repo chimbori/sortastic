@@ -2,8 +2,8 @@ package conf
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
+	"os"
 	"path/filepath"
 
 	"gopkg.in/yaml.v3"
@@ -32,7 +32,7 @@ type AppConfig struct {
 }
 
 func ReadConfig() AppConfig {
-	buf, err := ioutil.ReadFile("sortastic.yml")
+	buf, err := os.ReadFile("sortastic.yml")
 	if err != nil {
 		log.Fatal(err)
 	}
