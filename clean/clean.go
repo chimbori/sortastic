@@ -8,15 +8,26 @@ import (
 	"path/filepath"
 )
 
+var dryRun = true
+
 // Clean: deletes empty directories and other unwanted files from the specified paths.
 func Clean(args []string) {
-	flag.Parse()
-	if len(flag.Args()) == 1 {
-		fmt.Printf("Usage: %s <path> <path> ...\n", filepath.Base(os.Args[0]))
+
+	cleanFlags := flag.NewFlagSet("clean", flag.ExitOnError)
+	cleanFlags.BoolVar(&dryRun, "dryrun", true, "when true, does not delete anything")
+	cleanFlags.Parse(args)
+
+	if len(cleanFlags.Args()) == 0 {
+		cleanFlags.Usage()
+		fmt.Fprintf(os.Stderr, "\n%s clean [options] <path> <path> …\n\n", filepath.Base(os.Args[0]))
 		os.Exit(1)
 	}
 
-	rootDirs := args
+	if dryRun {
+		log.Println("DRY RUN: Nothing will be deleted.")
+	}
+
+	rootDirs := cleanFlags.Args()
 	for _, rootDir := range rootDirs {
 		numPaths := 0
 		err := filepath.Walk(rootDir,
@@ -59,9 +70,13 @@ func deleteDSStore(path string) {
 }
 
 func logAndDelete(path string) {
-	log.Printf("Deleting %s\n", path)
-	err := os.RemoveAll(path)
-	if err != nil {
-		log.Println(err)
+	if !dryRun {
+		log.Printf("Deleting %s\n", path)
+		err := os.RemoveAll(path)
+		if err != nil {
+			log.Println(err)
+		}
+	} else {
+		log.Printf("Would delete %s\n", path)
 	}
 }
