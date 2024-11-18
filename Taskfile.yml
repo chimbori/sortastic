@@ -12,11 +12,11 @@ tasks:
     watch: true
     # run: when_changed
     sources:
-      - '**/*.go'
       - '**/*.css'
+      - '**/*.go'
       - '**/*.svg'
-      - '**/*.yml'
       - '**/*.templ'
+      - '**/*.yml'
     deps: [tailwind-debug, fmt]
     cmds:
       - go run . web
