@@ -2,7 +2,6 @@ package conf
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 
@@ -11,7 +10,7 @@ import (
 
 var AppName = "Sortastic"
 
-var Config AppConfig
+var Config *AppConfig
 
 type AppConfigWeb struct {
 	Host string `yaml:"host"`
@@ -31,16 +30,16 @@ type AppConfig struct {
 	Directories []AppConfigDirectory `yaml:"directories"`
 }
 
-func ReadConfig() AppConfig {
+func ReadConfig() *AppConfig {
 	buf, err := os.ReadFile("sortastic.yml")
 	if err != nil {
-		log.Fatal(err)
+		return nil
 	}
 
 	c := &AppConfig{}
 	err = yaml.Unmarshal(buf, c)
 	if err != nil {
-		log.Fatal(err)
+		return nil
 	}
 
 	if c.Web.Host == "" {
@@ -59,5 +58,5 @@ func ReadConfig() AppConfig {
 	// json, _ := json.MarshalIndent(*c, "", "\t")
 	// fmt.Print(string(json))
 
-	return *c
+	return c
 }

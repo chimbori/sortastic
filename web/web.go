@@ -15,6 +15,10 @@ import (
 var staticFiles embed.FS
 
 func Web(args []string) {
+	if conf.Config == nil {
+		log.Fatal("Missing config file: sortastic.yml")
+	}
+
 	mux := http.NewServeMux()
 	mux.Handle("GET /static/", http.FileServer(http.FS(staticFiles)))
 	mux.HandleFunc("GET /favicon.ico", func(w http.ResponseWriter, req *http.Request) {
