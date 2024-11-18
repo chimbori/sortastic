@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"go.chimbori.app/sortastic/clean"
 	"os"
 	"path/filepath"
 
@@ -13,6 +14,7 @@ import (
 var commands = map[string]func([]string){
 	"web":    web.Web,
 	"dedupe": dedupe.Dedupe,
+	"clean":  clean.Clean,
 }
 
 func main() {
