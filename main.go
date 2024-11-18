@@ -6,11 +6,13 @@ import (
 	"path/filepath"
 
 	"go.chimbori.app/sortastic/conf"
+	"go.chimbori.app/sortastic/dedupe"
 	"go.chimbori.app/sortastic/web"
 )
 
 var commands = map[string]func([]string){
-	"web": web.Web,
+	"web":    web.Web,
+	"dedupe": dedupe.Dedupe,
 }
 
 func main() {
