@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"go.chimbori.app/sortastic/clean"
 	"os"
 	"path/filepath"
+
+	"go.chimbori.app/sortastic/clean"
 
 	"go.chimbori.app/sortastic/conf"
 	"go.chimbori.app/sortastic/dedupe"

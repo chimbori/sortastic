@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"syscall"
 
 	"go.chimbori.app/sortastic/conf"
 	"go.chimbori.app/sortastic/web/home"
 	"go.chimbori.app/sortastic/web/media"
+	"golang.org/x/term"
 )
 
 //go:embed static
@@ -17,6 +19,17 @@ var staticFiles embed.FS
 func Web(args []string) {
 	if conf.Config == nil {
 		log.Fatal("Missing config file: sortastic.yml")
+	}
+
+	if conf.Config.Web.Username != "" && conf.Config.Web.Password == "" {
+		// Request a password without echoing it to the console or in shell history.
+		fmt.Print("Password: ")
+		bytePassword, err := term.ReadPassword(int(syscall.Stdin))
+		if err != nil {
+			log.Fatal(err)
+		}
+		conf.Config.Web.Password = string(bytePassword)
+		fmt.Println()
 	}
 
 	mux := http.NewServeMux()

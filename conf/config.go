@@ -13,8 +13,10 @@ var AppName = "Sortastic"
 var Config *AppConfig
 
 type AppConfigWeb struct {
-	Host string `yaml:"host"`
-	Port int    `yaml:"port"`
+	Host     string `yaml:"host"`
+	Port     int    `yaml:"port"`
+	Username string `yaml:"username"`
+	Password string `yaml:"password"`
 }
 
 type AppConfigDirectory struct {

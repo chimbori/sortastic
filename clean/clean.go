@@ -12,7 +12,6 @@ var dryRun = true
 
 // Clean: deletes empty directories and other unwanted files from the specified paths.
 func Clean(args []string) {
-
 	cleanFlags := flag.NewFlagSet("clean", flag.ExitOnError)
 	cleanFlags.BoolVar(&dryRun, "dryrun", true, "when true, does not delete anything")
 	cleanFlags.Parse(args)

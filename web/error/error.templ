@@ -1,0 +1,17 @@
+package error
+
+import "go.chimbori.app/sortastic/web/common"
+
+templ ErrorTempl(msg string, title string) {
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<title>Error</title>
+			@common.Head()
+		</head>
+		<body class="sortastic-body">
+			@common.Header(title)
+			<p>{ msg }</p>
+		</body>
+	</html>
+}
