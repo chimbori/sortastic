@@ -2,6 +2,7 @@ package web
 
 import (
 	"embed"
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
@@ -16,20 +17,29 @@ import (
 //go:embed static
 var staticFiles embed.FS
 
+var passwordViaFlag string
+
 func Web(args []string) {
 	if conf.Config == nil {
 		log.Fatal("Missing config file: sortastic.yml")
 	}
 
 	if conf.Config.Web.Username != "" && conf.Config.Web.Password == "" {
-		// Request a password without echoing it to the console or in shell history.
-		fmt.Print("Password: ")
-		bytePassword, err := term.ReadPassword(int(syscall.Stdin))
-		if err != nil {
-			log.Fatal(err)
+		webFlags := flag.NewFlagSet("web", flag.ContinueOnError)
+		webFlags.StringVar(&passwordViaFlag, "password", "", "password for the Web UI, if not provided in config already")
+		webFlags.Parse(args)
+		if passwordViaFlag != "" {
+			conf.Config.Web.Password = passwordViaFlag
+		} else {
+			// Request a password without echoing it to the console or in shell history.
+			fmt.Print("Password: ")
+			bytePassword, err := term.ReadPassword(int(syscall.Stdin))
+			if err != nil {
+				log.Fatal(err)
+			}
+			conf.Config.Web.Password = string(bytePassword)
+			fmt.Println()
 		}
-		conf.Config.Web.Password = string(bytePassword)
-		fmt.Println()
 	}
 
 	mux := http.NewServeMux()
